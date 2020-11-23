@@ -146,3 +146,9 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_URL = 'user:login'
 LOGIN_REDIRECT_URL = 'questions:index'
 LOGOUT_REDIRECT_URL = 'questions:index'
+
+ES_INDEX = 'answerly'
+ES_HOST = 'localhost'
+ES_PORT = '9200'
+
+CHROMEDRIVER = os.path.join(BASE_DIR, '../chromedriver')

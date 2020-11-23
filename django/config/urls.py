@@ -22,6 +22,6 @@ import user.urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include(user.urls, namespace='user')),
-    path('', include(qanda.urls, namespace='questions')),
+    # path('', include(qanda.urls, namespace='questions')),
     path('questions', include(qanda.urls, namespace='questions')),
 ]

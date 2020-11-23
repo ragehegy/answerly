@@ -2,12 +2,13 @@ from django.shortcuts import render
 from django.urls.base import reverse
 from django.http.response import HttpResponseRedirect, HttpResponseBadRequest
 from django.views.generic import(
-    ListView, CreateView, DetailView, UpdateView, DayArchiveView, RedirectView
+    ListView, CreateView, DetailView, UpdateView, DayArchiveView, RedirectView, TemplateView
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import QuestionForm, AnswerAcceptForm, AnswerForm
 from .models import Question, Answer
 from django.utils import timezone
+from .service.elasticsearch import search_for_questions
 
 class AskQuestionView(CreateView, LoginRequiredMixin):
     form_class = QuestionForm
@@ -104,3 +105,15 @@ class TodaysQuestionList(RedirectView):
             'month': today.month,
             'year': today.year
         })
+
+class SearchView(TemplateView):
+    template_name = 'qanda/search.html'
+
+    def get_context_data(self, **kwargs):
+        query = self.request.GET.get('q', None)
+        ctx = super().get_context_data(query=query, **kwargs)
+
+        if query:
+            results = search_for_questions(query)
+            ctx['hits'] = results
+        return ctx
